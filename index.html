@@ -2,234 +2,819 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Happy Birthday</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Happy Birthday Piyush ♟️</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 
 <style>
+/* ============================================================
+   RESET & ROOT
+   ============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-body{
-margin:0;
-font-family:sans-serif;
-text-align:center;
-color:white;
-overflow:hidden;
+:root {
+  --green:        #81b64c;
+  --green-d:      #5d8a35;
+  --cream:        #f0d9b5;
+  --brown:        #b58863;
+  --yellow:       #f6c544;
+  --bg:           #161512;
+  --surface:      #262421;
+  --surface2:     #302e2b;
+  --border:       #3a3a3a;
+  --text:         #e0d9cc;
+  --muted:        #888;
 
-/* classy animated bg */
+  /* fluid font sizes (clamp: min, preferred vw, max) */
+  --fs-xs:   clamp(10px, 2.8vw, 13px);
+  --fs-sm:   clamp(12px, 3.2vw, 15px);
+  --fs-md:   clamp(14px, 3.8vw, 17px);
+  --fs-lg:   clamp(17px, 4.5vw, 22px);
+  --fs-xl:   clamp(22px, 6vw,   32px);
+  --fs-2xl:  clamp(28px, 8vw,   44px);
 
-background:linear-gradient(-45deg,#ff4e50,#ff0080,#8e2de2,#4a00e0);
-background-size:400% 400%;
-animation:bgMove 10s infinite linear;
+  --radius:  14px;
+  --gap:     clamp(8px, 2vw, 14px);
+  --pad:     clamp(12px, 4vw, 20px);
 }
 
-.after{
-background:linear-gradient(-45deg,#141e30,#243b55,#000000,#434343);
-background-size:400% 400%;
-animation:bgMove 12s infinite linear;
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
 }
 
-@keyframes bgMove{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
+/* ============================================================
+   PHONE SHELL — centres content on wide screens
+   ============================================================ */
+.shell {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0e0d0b;
 }
 
-.container{
-padding:20px;
-position:relative;
-z-index:2;
+.phone {
+  position: relative;
+  width: 100%;
+  max-width: 430px;      /* typical iPhone Pro Max */
+  height: 100%;
+  max-height: 932px;
+  background: var(--bg);
+  overflow: hidden;
+  /* subtle phone border on big screens */
 }
 
-h1{
-font-size:26px;
-text-shadow:0 0 10px white;
+@media (min-width: 500px) {
+  .phone {
+    border-radius: 40px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px #2c2c2c;
+    max-height: 870px;
+  }
 }
 
-button{
-padding:15px 25px;
-font-size:18px;
-border:none;
-border-radius:30px;
-background:linear-gradient(45deg,#ff0080,#ff4e50);
-color:white;
-margin-top:20px;
-box-shadow:0 0 10px white;
+/* ============================================================
+   CHESS.COM SCENE  (initial state)
+   ============================================================ */
+#chessScene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  z-index: 1;
 }
 
-/* curtain */
+/* ── top bar ── */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px var(--pad);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.topbar .back  { font-size: var(--fs-lg); color: var(--muted); }
+.topbar .icon  { font-size: var(--fs-lg); }
+.topbar .label { font-size: var(--fs-lg); font-weight: 700; color: #fff; }
 
-#curtain{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-display:none;
-z-index:5;
+/* ── time pill ── */
+.time-row {
+  margin: var(--gap) var(--pad) 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface2);
+  border-radius: var(--radius);
+  padding: 14px var(--pad);
+  border: 1px solid var(--border);
+}
+.time-row .left  { display: flex; align-items: center; gap: 10px; font-size: var(--fs-md); font-weight: 600; color: #fff; }
+.time-row .right { font-size: var(--fs-md); color: var(--muted); }
+
+/* ── START GAME button ── */
+#startBtn {
+  margin: var(--gap) var(--pad) 0;
+  padding: 18px;
+  background: var(--green);
+  border: none;
+  border-radius: var(--radius);
+  font-size: var(--fs-lg);
+  font-weight: 800;
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: 'Outfit', sans-serif;
+  box-shadow: 0 6px 24px rgba(129,182,76,.35);
+  transition: background .2s, transform .15s, box-shadow .2s;
+  position: relative;
+  z-index: 10;
+  width: calc(100% - var(--pad) * 2);
+  display: block;
+}
+#startBtn:hover  { background: var(--green-d); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(129,182,76,.55); }
+#startBtn:active { transform: translateY(0); }
+
+/* ── menu list ── */
+.menu-list {
+  margin: var(--gap) var(--pad) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.menu-item {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--surface2);
+  border-radius: var(--radius);
+  padding: 15px var(--pad);
+  border: 1px solid var(--border);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: #ddd;
+  cursor: pointer;
+  transition: background .2s;
+}
+.menu-item:hover { background: #3a3633; }
+.menu-item .mi  { font-size: var(--fs-lg); }
+
+.chevron-bottom { text-align: center; padding: 14px; color: var(--muted); font-size: var(--fs-lg); }
+
+/* ============================================================
+   CHESSBOARD CURTAIN
+   ============================================================ */
+#curtain {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: none;
+  pointer-events: none;
+}
+.c-half {
+  position: absolute;
+  top: 0; width: 50%; height: 100%;
+  overflow: hidden;
+  transition: transform 1.6s cubic-bezier(.77,0,.18,1);
+}
+.c-left  { left:  0; }
+.c-right { right: 0; }
+.c-grid {
+  width: 100%; height: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows:    repeat(8, 1fr);
+}
+.c-cell.light { background: var(--cream); }
+.c-cell.dark  { background: var(--brown); }
+
+#curtain.open .c-left  { transform: translateX(-100%); }
+#curtain.open .c-right { transform: translateX(100%);  }
+
+/* ============================================================
+   BIRTHDAY CONTENT
+   ============================================================ */
+#bdayWrap {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--pad) var(--pad) 60px;
+  background: linear-gradient(180deg, #161512 0%, #1a1916 100%);
+  z-index: 20;
 }
 
-.panel{
-position:absolute;
-top:0;
-width:50%;
-height:100%;
-background:linear-gradient(#4b0000,#8b0000);
-transition:1.5s;
+/* scrollbar */
+#bdayWrap::-webkit-scrollbar { width: 3px; }
+#bdayWrap::-webkit-scrollbar-thumb { background: var(--green-d); border-radius: 2px; }
+
+/* entrance animation */
+#bdayWrap > * {
+  animation: slideUp .6s ease both;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+/* stagger */
+#bdayWrap > *:nth-child(1)  { animation-delay: .1s; }
+#bdayWrap > *:nth-child(2)  { animation-delay: .2s; }
+#bdayWrap > *:nth-child(3)  { animation-delay: .3s; }
+#bdayWrap > *:nth-child(4)  { animation-delay: .4s; }
+#bdayWrap > *:nth-child(5)  { animation-delay: .5s; }
+#bdayWrap > *:nth-child(6)  { animation-delay: .6s; }
+#bdayWrap > *:nth-child(7)  { animation-delay: .7s; }
+#bdayWrap > *:nth-child(8)  { animation-delay: .8s; }
+#bdayWrap > *:nth-child(9)  { animation-delay: .9s; }
+
+/* ── crown ── */
+.crown {
+  font-size: clamp(36px, 10vw, 52px);
+  margin-top: 8px;
+  animation: crownBounce 1.4s ease-in-out infinite alternate;
+}
+@keyframes crownBounce {
+  from { transform: translateY(0) rotate(-4deg); }
+  to   { transform: translateY(-8px) rotate(4deg); }
 }
 
-.left{left:0;}
-.right{right:0;}
+/* ── title ── */
+.bday-title {
+  font-size: var(--fs-2xl);
+  font-weight: 900;
+  text-align: center;
+  line-height: 1.15;
+  margin-top: 6px;
+  background: linear-gradient(90deg, var(--green), var(--yellow), var(--green));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+@keyframes shimmer { to { background-position: 200% center; } }
 
-.open .left{
-transform:translateX(-100%);
+.bday-sub {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-top: 4px;
 }
 
-.open .right{
-transform:translateX(100%);
+.rapid-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--green);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: #fff;
+  margin-top: 8px;
+  box-shadow: 0 2px 12px rgba(129,182,76,.4);
 }
 
-/* photo */
+/* ── photo frame ── */
+.photo-wrap {
+  margin-top: 16px;
+  position: relative;
+  width: min(260px, 70vw);
+}
+.photo-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 22px;
+  background: linear-gradient(45deg, var(--green), var(--yellow), var(--brown), var(--green));
+  background-size: 300% 300%;
+  animation: borderGlow 3s ease infinite;
+  z-index: 0;
+}
+@keyframes borderGlow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.photo-wrap img {
+  position: relative; z-index: 1;
+  width: 100%;
+  border-radius: 18px;
+  display: block;
+  box-shadow: 0 8px 32px rgba(0,0,0,.6);
+}
+.chess-badge {
+  position: absolute;
+  bottom: -10px; right: -10px;
+  z-index: 2;
+  background: var(--green);
+  border-radius: 50%;
+  width: 42px; height: 42px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 4px 14px rgba(129,182,76,.5);
+  animation: spin 8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-#photoBox{
-display:none;
-margin-top:20px;
-animation:fade 2s;
+/* ── card base ── */
+.card {
+  margin-top: 16px;
+  width: min(360px, 100%);
+  background: var(--surface2);
+  border-radius: var(--radius);
+  padding: 14px var(--pad);
+  border: 1px solid var(--border);
 }
 
-@keyframes fade{
-from{opacity:0; transform:scale(0.8);}
-to{opacity:1; transform:scale(1);}
+/* ── rating rows ── */
+.card-title {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.rating-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: var(--fs-sm);
+}
+.rating-row:last-child { border-bottom: none; }
+.rating-row .lbl { display: flex; align-items: center; gap: 8px; color: #ccc; }
+.rating-row .val { font-weight: 700; color: var(--green); }
+
+/* ── pieces row ── */
+.pieces-row {
+  margin-top: 14px;
+  display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  width: min(360px, 100%);
+}
+.pc {
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: clamp(18px, 5vw, 24px);
+  border: 1px solid var(--border);
+  animation: piecePulse 2s ease infinite;
+  animation-delay: var(--d, 0s);
+}
+@keyframes piecePulse {
+  0%,100% { transform: scale(1); }
+  50%      { transform: translateY(-4px) scale(1.06); }
 }
 
-img{
-width:80%;
-max-width:320px;
-border-radius:20px;
-box-shadow:0 0 25px white;
+/* ── Tal card ── */
+.tal-card {
+  margin-top: 16px;
+  width: min(360px, 100%);
+  background: linear-gradient(135deg, #1a1008, #2d1f0a);
+  border-radius: var(--radius);
+  padding: 16px var(--pad);
+  border: 1px solid var(--brown);
+  position: relative; overflow: hidden;
+}
+.tal-card::after {
+  content: '♟';
+  position: absolute;
+  right: -10px; top: -10px;
+  font-size: 100px;
+  opacity: .06;
+  color: var(--yellow);
+  pointer-events: none;
+}
+.tal-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.tal-icon {
+  flex-shrink: 0;
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--yellow), #e6a800);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 0 14px rgba(246,197,68,.4);
+}
+.tal-name  { font-size: var(--fs-sm); color: var(--yellow); font-weight: 700; letter-spacing: .5px; }
+.tal-since { font-size: var(--fs-xs); color: var(--muted); margin-top: 2px; }
+
+.tal-quote {
+  font-size: var(--fs-sm);
+  color: #c9b88a;
+  line-height: 1.65;
+  font-style: italic;
+  border-left: 3px solid var(--yellow);
+  padding-left: 12px;
+  margin-bottom: 10px;
+}
+.tal-fact {
+  background: rgba(246,197,68,.07);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: var(--fs-xs);
+  color: #bba;
+  line-height: 1.65;
+}
+.tal-fact strong { color: var(--yellow); }
+
+/* ── surprise button ── */
+.tal-btn {
+  margin-top: 14px;
+  padding: 15px var(--pad);
+  background: linear-gradient(135deg, #c07a00, var(--yellow));
+  border: none;
+  border-radius: var(--radius);
+  color: #1a1208;
+  font-size: var(--fs-md);
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  width: min(360px, 100%);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  box-shadow: 0 4px 20px rgba(246,197,68,.3);
+  transition: transform .2s, box-shadow .2s;
+}
+.tal-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(246,197,68,.5); }
+
+/* ── birthday message ── */
+.msg-card {
+  margin-top: 14px;
+  width: min(360px, 100%);
+  background: #1e2e1a;
+  border-radius: var(--radius);
+  padding: 16px var(--pad);
+  border: 1px solid var(--green-d);
+  text-align: center;
+}
+.msg-card .msg   { font-size: var(--fs-sm); color: #c8e6a8; line-height: 1.75; }
+.msg-card .from  { margin-top: 10px; font-size: var(--fs-xs); color: #5a8a45; font-weight: 600; letter-spacing: 1px; }
+
+/* ============================================================
+   FALLING PIECES
+   ============================================================ */
+.fp {
+  position: fixed;
+  top: -60px;
+  font-size: 28px;
+  pointer-events: none;
+  z-index: 200;
+  animation: fallPiece linear forwards;
+  user-select: none;
+}
+@keyframes fallPiece {
+  0%   { transform: translateY(-50px) rotate(0deg) scale(1);   opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg) scale(.5); opacity: .2; }
 }
 
-/* flowers */
+/* ============================================================
+   MIKHAIL TAL FLASH MODAL
+   ============================================================ */
+#talModal {
+  position: absolute;
+  inset: 0;
+  z-index: 300;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: var(--pad);
+  background: rgba(0,0,0,.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.tal-bolt {
+  font-size: clamp(60px, 18vw, 90px);
+  animation: boltPop .6s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes boltPop {
+  from { transform: scale(0) rotate(-180deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0deg);    opacity: 1; }
+}
+.tal-modal-title {
+  font-size: var(--fs-xl);
+  font-weight: 900;
+  color: var(--yellow);
+  text-align: center;
+  line-height: 1.3;
+  text-shadow: 0 0 30px rgba(246,197,68,.7);
+  animation: glow 1.5s ease infinite alternate;
+}
+@keyframes glow {
+  from { text-shadow: 0 0 10px rgba(246,197,68,.4); }
+  to   { text-shadow: 0 0 40px rgba(246,197,68,1), 0 0 80px rgba(246,197,68,.4); }
+}
+.tal-modal-sub {
+  font-size: var(--fs-sm);
+  color: #c9b88a;
+  text-align: center;
+  max-width: 300px;
+  line-height: 1.7;
+  font-style: italic;
+}
+.tal-accept-btn {
+  padding: 13px 28px;
+  background: var(--green);
+  border: none;
+  border-radius: 30px;
+  color: #fff;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: background .2s, transform .15s;
+}
+.tal-accept-btn:hover  { background: var(--green-d); transform: translateY(-2px); }
+.tal-accept-btn:active { transform: translateY(0); }
 
-.petal{
-position:fixed;
-top:-30px;
-font-size:20px;
-pointer-events:none;
-animation:fall linear forwards;
+/* ============================================================
+   GLITTER  particles
+   ============================================================ */
+.glitter {
+  position: fixed;
+  pointer-events: none;
+  z-index: 400;
+  animation: glitterBurst linear forwards;
 }
-
-@keyframes fall{
-0%{
-transform:translateY(-50px) rotate(0deg);
-opacity:1;
+@keyframes glitterBurst {
+  0%   { opacity: 1; transform: translate(0,0) scale(1.2); }
+  100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
 }
-100%{
-transform:translateY(110vh) rotate(360deg);
-opacity:0.9;
-}
-}
-
 </style>
 </head>
-
 <body>
 
-<div id="curtain">
-<div class="panel left"></div>
-<div class="panel right"></div>
-</div>
+<div class="shell">
+<div class="phone">
 
-<div class="container" id="mainBox">
+  <!-- ============================================================
+       CHESS.COM RAPID SCENE
+       ============================================================ -->
+  <div id="chessScene">
+    <div class="topbar">
+      <span class="back">←</span>
+      <span class="icon">♞</span>
+      <span class="label">New Game</span>
+    </div>
 
-<h1 id="title">🎂 Happy Birthday Shreya 🎂</h1>
+    <div class="time-row">
+      <div class="left"><span>⏱️</span><span>10 min</span></div>
+      <div class="right">⌄</div>
+    </div>
 
-<p id="msg">A surprise is waiting ✨</p>
+    <button id="startBtn" onclick="launchBirthday()">♟&nbsp;&nbsp;Start Game</button>
 
-<button id="btn" onclick="magic()">🎁 Open Surprise</button>
+    <div class="menu-list">
+      <div class="menu-item"><span class="mi">🏆</span> Tournaments</div>
+      <div class="menu-item"><span class="mi">👥</span> Play a Friend</div>
+      <div class="menu-item"><span class="mi">🤖</span> Play Bots</div>
+      <div class="menu-item"><span class="mi">👨‍🏫</span> Play Coach</div>
+    </div>
 
-<div id="photoBox">
+    <div class="chevron-bottom">⌄</div>
+  </div>
 
-<img src="assets/shreya.jpeg">
+  <!-- ============================================================
+       CHESSBOARD CURTAIN
+       ============================================================ -->
+  <div id="curtain">
+    <div class="c-half c-left"><div class="c-grid" id="leftGrid"></div></div>
+    <div class="c-half c-right"><div class="c-grid" id="rightGrid"></div></div>
+  </div>
 
-<h2 id="afterText">😊stay healthy stay happy 💖</h2>
+  <!-- ============================================================
+       BIRTHDAY PAGE
+       ============================================================ -->
+  <div id="bdayWrap">
 
-</div>
+    <div class="crown">♛</div>
 
-</div>
+    <div class="bday-title">Happy Birthday<br>Piyush! 🎂</div>
+    <div class="bday-sub">♟ The Chess King ♟</div>
+    <div class="rapid-pill"><span>⚡</span> Rapid · 10+0</div>
 
-<audio id="music">
-<source src="assets/birthday_salsa.mp3" type="audio/mpeg">
+    <!-- Photo -->
+    <div class="photo-wrap">
+      <img src="assets/piyush.png" alt="Piyush" id="piyushPhoto">
+      <div class="chess-badge">♚</div>
+    </div>
+
+    <!-- Rating card -->
+    <div class="card">
+      <div class="card-title">♟ Piyush's Life Stats</div>
+      <div class="rating-row">
+        <span class="lbl">♟&nbsp; Birthday Rating</span>
+        <span class="val">2800+</span>
+      </div>
+      <div class="rating-row">
+        <span class="lbl">⚡&nbsp; Rapid Level</span>
+        <span class="val">Grandmaster</span>
+      </div>
+      <div class="rating-row">
+        <span class="lbl">🏆&nbsp; Win Streak</span>
+        <span class="val">∞ Days</span>
+      </div>
+      <div class="rating-row">
+        <span class="lbl">♛&nbsp; Puzzles Solved</span>
+        <span class="val">100%</span>
+      </div>
+    </div>
+
+    <!-- Pieces -->
+    <div class="pieces-row">
+      <div class="pc" style="--d:0s">♜</div>
+      <div class="pc" style="--d:.2s">♞</div>
+      <div class="pc" style="--d:.4s">♝</div>
+      <div class="pc" style="--d:.6s">♛</div>
+      <div class="pc" style="--d:.8s">♚</div>
+      <div class="pc" style="--d:1s">♟</div>
+    </div>
+
+    <!-- Tal card -->
+    <div class="tal-card">
+      <div class="tal-head">
+        <div class="tal-icon">⚡</div>
+        <div>
+          <div class="tal-name">⚡ Mikhail Tal · The Magician</div>
+          <div class="tal-since">8th World Champion · Riga, 1936–1992</div>
+        </div>
+      </div>
+      <div class="tal-quote">
+        "You must take your opponent into a deep dark forest where 2+2=5, and the path leading out is only wide enough for one."
+      </div>
+      <div class="tal-fact">
+        <strong>🔥 For Piyush:</strong> Just like Tal, you make bold moves in life with fearless creativity. Tal sacrificed pieces to win — you sacrifice sleep to win at everything you love. Happy Birthday, you chess genius! ♟
+      </div>
+    </div>
+
+    <!-- Tal surprise button -->
+    <button class="tal-btn" onclick="showTalModal()">
+      ⚡ Mikhail's Special Surprise!
+    </button>
+
+    <!-- Birthday message -->
+    <div class="msg-card">
+      <div class="msg">
+        🎂 Wishing you a day full of brilliant moves,<br>
+        sacrifices that pay off, and a birthday as<br>
+        legendary as <strong>Mikhail Tal's immortal games</strong>! ♛<br><br>
+        May every year bring you more rating points,<br>
+        more wins, and more joy.<br>
+        <strong>Checkmate, boredom!</strong> 🎉
+      </div>
+      <div class="from">— From Chess.com &amp; your biggest fans ♟</div>
+    </div>
+
+  </div>
+  <!-- /bdayWrap -->
+
+  <!-- ============================================================
+       MIKHAIL TAL MODAL
+       ============================================================ -->
+  <div id="talModal">
+    <div class="tal-bolt">⚡</div>
+    <div class="tal-modal-title">MIKHAIL TAL'S<br>IMMORTAL SACRIFICE!</div>
+    <div class="tal-modal-sub">
+      "Happy Birthday Piyush! — Tal once said every great player carries the spirit of a demon.
+       You carry that fire too. Play on, King." ♚
+    </div>
+    <button class="tal-accept-btn" onclick="closeTalModal()">♟ Accept the Sacrifice</button>
+  </div>
+
+</div><!-- /phone -->
+</div><!-- /shell -->
+
+<audio id="music" loop>
+  <source src="assets/soul_of_doctor.mp3" type="audio/mpeg">
 </audio>
 
 <script>
+/* ── build chessboard curtain cells ── */
+function buildGrid(id, offset) {
+  const g = document.getElementById(id);
+  for (let r = 0; r < 8; r++)
+    for (let c = 0; c < 4; c++) {
+      const d = document.createElement('div');
+      d.className = 'c-cell ' + ((r + c + offset) % 2 === 0 ? 'light' : 'dark');
+      g.appendChild(d);
+    }
+}
+buildGrid('leftGrid',  0);
+buildGrid('rightGrid', 1);
 
-function magic(){
+/* ── chess pieces for falling rain ── */
+const PIECES = ['♚','♛','♜','♝','♞','♟','♔','♕','♖','♗','♘','♙'];
 
-let curtain=document.getElementById("curtain");
-let music=document.getElementById("music");
+/* ─── MAIN LAUNCH ─── */
+function launchBirthday() {
+  const btn = document.getElementById('startBtn');
+  btn.disabled = true;
+  btn.textContent = '♟  Loading...';
 
-let btn=document.getElementById("btn");
-let title=document.getElementById("title");
-let msg=document.getElementById("msg");
+  const curtain = document.getElementById('curtain');
+  const music   = document.getElementById('music');
 
+  // glitter at button
+  burstAt(btn.getBoundingClientRect());
 
-// hide intro text
+  // show curtain overlay
+  curtain.style.display = 'block';
 
-btn.style.display="none";
-msg.style.display="none";
-title.style.display="none";
+  // play music
+  music.currentTime = 0;
+  music.play().catch(() => {});
 
+  // open curtain after slight delay
+  setTimeout(() => curtain.classList.add('open'), 300);
 
-// show curtain
-
-curtain.style.display="block";
-
-
-// play music
-
-music.currentTime=0;
-music.play().catch(()=>{});
-
-
-// open curtain
-
-setTimeout(()=>{
-curtain.classList.add("open");
-document.body.classList.add("after");
-},500);
-
-
-// show photo
-
-setTimeout(()=>{
-document.getElementById("photoBox").style.display="block";
-},1700);
-
-
-// classy petals
-
-let flowers=["🌸","💮","✨","❀","✿","💖"];
-
-for(let i=0;i<60;i++){
-
-let p=document.createElement("div");
-
-p.innerHTML=flowers[Math.floor(Math.random()*flowers.length)];
-
-p.className="petal";
-
-p.style.left=Math.random()*100+"%";
-
-p.style.animationDuration=(4+Math.random()*3)+"s";
-
-p.style.fontSize=(16+Math.random()*10)+"px";
-
-document.body.appendChild(p);
-
+  // reveal birthday page
+  setTimeout(() => {
+    document.getElementById('chessScene').style.display = 'none';
+    curtain.style.display = 'none';
+    const wrap = document.getElementById('bdayWrap');
+    wrap.style.display = 'flex';
+    startFallingPieces();
+    // auto‑open Tal modal after 4s
+    setTimeout(showTalModal, 4000);
+  }, 2000);
 }
 
+/* ─── FALLING PIECES ─── */
+let fallInterval;
+function spawnFP() {
+  const el = document.createElement('div');
+  el.className = 'fp';
+  el.textContent = PIECES[Math.floor(Math.random() * PIECES.length)];
+  el.style.left = Math.random() * 100 + 'vw';
+  const dur = 3 + Math.random() * 4;
+  el.style.animationDuration = dur + 's';
+  el.style.fontSize = (18 + Math.random() * 20) + 'px';
+  el.style.color = Math.random() > .5 ? '#f0d9b5' : '#81b64c';
+  el.style.opacity = (.5 + Math.random() * .5).toString();
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), (dur + .5) * 1000);
+}
+function startFallingPieces() {
+  for (let i = 0; i < 18; i++) setTimeout(spawnFP, i * 160);
+  fallInterval = setInterval(spawnFP, 400);
+  setTimeout(() => { clearInterval(fallInterval); fallInterval = setInterval(spawnFP, 900); }, 10000);
+}
+
+/* ─── TAL MODAL ─── */
+function showTalModal() {
+  const m = document.getElementById('talModal');
+  m.style.display = 'flex';
+  for (let i = 0; i < 24; i++) setTimeout(spawnGlitter, i * 80);
+}
+function closeTalModal() {
+  document.getElementById('talModal').style.display = 'none';
+}
+
+/* ─── GLITTER ─── */
+function burstAt(rect) {
+  const cx = rect.left + rect.width  / 2;
+  const cy = rect.top  + rect.height / 2;
+  const emojis = ['✨','⭐','🎂','♟','🎉','💛','♛'];
+  for (let i = 0; i < 22; i++) {
+    const g = makeGlitter(emojis);
+    g.style.left = cx + (Math.random() - .5) * 60 + 'px';
+    g.style.top  = cy + (Math.random() - .5) * 30 + 'px';
+    placeGlitter(g, 80, 140);
+  }
+}
+function spawnGlitter() {
+  const emojis = ['⚡','♟','✨','🔥','♛','⭐','🎂'];
+  const g = makeGlitter(emojis);
+  g.style.left = Math.random() * 100 + 'vw';
+  g.style.top  = Math.random() * 100 + 'vh';
+  placeGlitter(g, 100, 200);
+}
+function makeGlitter(arr) {
+  const g = document.createElement('div');
+  g.className = 'glitter';
+  g.textContent = arr[Math.floor(Math.random() * arr.length)];
+  g.style.fontSize = (14 + Math.random() * 14) + 'px';
+  document.body.appendChild(g);
+  return g;
+}
+function placeGlitter(g, minD, maxD) {
+  const angle = Math.random() * 360;
+  const dist  = minD + Math.random() * maxD;
+  g.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+  g.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+  g.style.animationDuration = (.6 + Math.random() * .6) + 's';
+  g.style.animationFillMode = 'forwards';
+  setTimeout(() => g.remove(), 1400);
 }
 </script>
-
 </body>
 </html>
